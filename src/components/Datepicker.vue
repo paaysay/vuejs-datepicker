@@ -23,7 +23,7 @@
         :clear-button="clearButton"
         :disabled="disabledPicker"
         :required="required"
-        v-mask="'##/##/####'">
+        v-mask="'####/##/##'">
       <!-- Clear Button -->
       <span class="vdp-datepicker__clear-button" :class="{'input-group-addon' : bootstrapStyling}" v-if="clearButton && selectedDate" @click="clearDate()">
         <i :class="clearButtonIcon">
@@ -348,16 +348,20 @@ export default {
     },
     updateDate (event) {
       let valueDate = this.$refs.inputdatepicker.value
-      try {
-        let currentYear = this.disabled.from.getFullYear().toString().split('')
-        var regex = new RegExp('^(0[1-9]|[1-2]\\d|3[0-1])\\/(0[1-9]|1[0-2])\\/(19[7-9]\\d|200\\d|20[0-' + currentYear[2] + '][0-' + currentYear[3] + '])$')
-        if (event.key !== 'Backspace') {
-          if (valueDate.match(regex)) {
-            this.$emit('input', DateUtils.newDate(valueDate, this.format, this.translation))
+      let upperCaseFormat = this.format.toUpperCase()
+      if (moment(valueDate, upperCaseFormat, true).isValid()) {
+        this.selectedDate = DateUtils.newDate(valueDate, this.format, this.translation)
+        try {
+          let currentYear = this.disabled.from.getFullYear().toString().split('')
+          let regex = new RegExp('^(0[1-9]|[1-2]\\d|3[0-1])\\/(0[1-9]|1[0-2])\\/(19[7-9]\\d|200\\d|20[0-' + currentYear[2] + '][0-' + currentYear[3] + '])$')
+          if (event.key !== 'Backspace') {
+            if (valueDate.match(regex)) {
+              this.$emit('input', DateUtils.newDate(valueDate, this.format, this.translation))
+            }
           }
+        } catch (e) {
+          this.$emit('input', DateUtils.newDate(valueDate, this.format, this.translation))
         }
-      } catch (e) {
-        this.$emit('input', DateUtils.newDate(valueDate, this.format, this.translation))
       }
     },
     /**
