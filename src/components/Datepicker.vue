@@ -23,7 +23,7 @@
         :clear-button="clearButton"
         :disabled="disabledPicker"
         :required="required"
-        v-mask="'####/##/##'">
+        v-mask="'####-##-##'">
       <!-- Clear Button -->
       <span class="vdp-datepicker__clear-button" :class="{'input-group-addon' : bootstrapStyling}" v-if="clearButton && selectedDate" @click="clearDate()">
         <i :class="clearButtonIcon">
@@ -107,6 +107,7 @@
 import DateUtils from '@/utils/DateUtils.js'
 import DateLanguages from '@/utils/DateLanguages.js'
 import {mask} from 'vue-the-mask'
+import moment from 'moment'
 
 export default {
   props: {
