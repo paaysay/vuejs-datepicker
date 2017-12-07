@@ -351,17 +351,18 @@ export default {
       let valueDate = this.$refs.inputdatepicker.value
       let upperCaseFormat = this.format.toUpperCase()
       if (moment(valueDate, upperCaseFormat, true).isValid()) {
+        let momentDate = moment(valueDate).format(upperCaseFormat)
         this.selectedDate = DateUtils.newDate(valueDate, this.format, this.translation)
         try {
           let currentYear = this.disabled.from.getFullYear().toString().split('')
           let regex = new RegExp('^(0[1-9]|[1-2]\\d|3[0-1])\\/(0[1-9]|1[0-2])\\/(19[7-9]\\d|200\\d|20[0-' + currentYear[2] + '][0-' + currentYear[3] + '])$')
           if (event.key !== 'Backspace') {
             if (valueDate.match(regex)) {
-              this.$emit('input', DateUtils.newDate(valueDate, this.format, this.translation))
+              this.$emit('input', momentDate)
             }
           }
         } catch (e) {
-          this.$emit('input', DateUtils.newDate(valueDate, this.format, this.translation))
+          this.$emit('input', momentDate)
         }
       }
     },
@@ -418,10 +419,10 @@ export default {
       const date = new Date(timestamp)
       this.selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
       this.setPageDate(date)
-      let newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
-      let finalDate = newDate.setDate(newDate.getDate() + 1)
-      this.$emit('selected', finalDate)
-      this.$emit('input', finalDate)
+      let momentDate = moment([date.getFullYear(), date.getMonth(), date.getDate()])
+      let upperCaseFormat = this.format.toUpperCase()
+      this.$emit('selected', momentDate.format(upperCaseFormat))
+      this.$emit('input', momentDate.format(upperCaseFormat))
     },
     clearDate () {
       this.selectedDate = null
