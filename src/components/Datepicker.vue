@@ -420,10 +420,10 @@ export default {
     },
     setDate (timestamp) {
       const date = new Date(timestamp)
-      this.selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
       this.setPageDate(date)
       let momentDate = moment([date.getFullYear(), date.getMonth(), date.getDate()])
       let upperCaseFormat = this.format.toUpperCase()
+      this.selectedDate = upperCaseFormat
       this.$emit('selected', momentDate.format(upperCaseFormat))
       this.$emit('input', momentDate.format(upperCaseFormat))
     },
