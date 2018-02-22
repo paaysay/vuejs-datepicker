@@ -220,6 +220,7 @@ export default {
       if (!this.selectedDate) {
         return null
       }
+      console.log(this.selectedDate)
       return typeof this.format === 'function'
         ? this.format(this.selectedDate)
         : DateUtils.formatDate(new Date(this.selectedDate), this.format, this.translation)
