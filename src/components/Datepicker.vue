@@ -108,7 +108,6 @@ import DateUtils from '@/utils/DateUtils.js'
 import DateLanguages from '@/utils/DateLanguages.js'
 import {mask} from 'vue-the-mask'
 import moment from 'moment'
-
 export default {
   props: {
     value: {
@@ -221,7 +220,6 @@ export default {
       if (!this.selectedDate) {
         return null
       }
-
       return typeof this.format === 'function'
         ? this.format(this.selectedDate)
         : DateUtils.formatDate(new Date(this.selectedDate), this.format, this.translation)
@@ -421,11 +419,6 @@ export default {
     setDate (timestamp) {
       const date = new Date(timestamp)
       this.selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
-      console.log('timestamp-' + timestamp)
-      console.log('full year-' + date.getFullYear())
-      console.log('month-' + date.getMonth())
-      console.log('date-' + date.getDate())
-      console.log('full date' + this.selectedDate)
       this.setPageDate(date)
       let momentDate = moment([date.getFullYear(), date.getMonth(), date.getDate()])
       let upperCaseFormat = this.format.toUpperCase()
@@ -587,7 +580,6 @@ export default {
       let d = new Date(this.pageDate)
       return Math.ceil(this.disabled.from.getFullYear() / 10) * 10 <= Math.ceil(d.getFullYear() / 10) * 10
     },
-
     /**
      * Whether a day is selected
      * @param {Date}
@@ -596,7 +588,6 @@ export default {
     isSelectedDate (dObj) {
       return this.selectedDate && this.selectedDate.toDateString() === dObj.toDateString()
     },
-
     /**
      * Whether a day is disabled
      * @param {Date}
@@ -604,11 +595,9 @@ export default {
      */
     isDisabledDate (date) {
       let disabled = false
-
       if (typeof this.disabled === 'undefined') {
         return false
       }
-
       if (typeof this.disabled.dates !== 'undefined') {
         this.disabled.dates.forEach((d) => {
           if (date.toDateString() === d.toDateString()) {
@@ -628,7 +617,6 @@ export default {
       }
       return disabled
     },
-
     /**
      * Whether a day is highlighted (only if it is not disabled already)
      * @param {Date}
@@ -638,13 +626,10 @@ export default {
       if (this.isDisabledDate(date)) {
         return false
       }
-
       let highlighted = false
-
       if (typeof this.highlighted === 'undefined') {
         return false
       }
-
       if (typeof this.highlighted.dates !== 'undefined') {
         this.highlighted.dates.forEach((d) => {
           if (date.toDateString() === d.toDateString()) {
@@ -653,17 +638,14 @@ export default {
           }
         })
       }
-
       if (this.isDefined(this.highlighted.from) && this.isDefined(this.highlighted.to)) {
         highlighted = date >= this.highlighted.from && date <= this.highlighted.to
       }
-
       if (typeof this.highlighted.days !== 'undefined' && this.highlighted.days.indexOf(date.getDay()) !== -1) {
         highlighted = true
       }
       return highlighted
     },
-
     /**
      * Helper
      * @param  {mixed}  prop
@@ -672,7 +654,6 @@ export default {
     isDefined (prop) {
       return typeof prop !== 'undefined' && prop
     },
-
     /**
      * Whether the selected date is in this month
      * @param {Date}
@@ -683,7 +664,6 @@ export default {
         this.selectedDate.getFullYear() === date.getFullYear() &&
         this.selectedDate.getMonth() === date.getMonth())
     },
-
     /**
      * Whether a month is disabled
      * @param {Date}
@@ -691,11 +671,9 @@ export default {
      */
     isDisabledMonth (date) {
       let disabled = false
-
       if (typeof this.disabled === 'undefined') {
         return false
       }
-
       if (typeof this.disabled.to !== 'undefined' && this.disabled.to) {
         if (
           (date.getMonth() < this.disabled.to.getMonth() && date.getFullYear() <= this.disabled.to.getFullYear()) ||
@@ -715,7 +693,6 @@ export default {
       }
       return disabled
     },
-
     /**
      * Whether a year is disabled
      * @param {Date}
@@ -724,7 +701,6 @@ export default {
     isSelectedYear (date) {
       return this.selectedDate && this.selectedDate.getFullYear() === date.getFullYear()
     },
-
     /**
      * Whether a month is disabled
      * @param {Date}
@@ -735,7 +711,6 @@ export default {
       if (typeof this.disabled === 'undefined' || !this.disabled) {
         return false
       }
-
       if (typeof this.disabled.to !== 'undefined' && this.disabled.to) {
         if (date.getFullYear() < this.disabled.to.getFullYear()) {
           disabled = true
@@ -746,10 +721,8 @@ export default {
           disabled = true
         }
       }
-
       return disabled
     },
-
     /**
      * Set the datepicker value
      * @param {Date|String|null} date
@@ -767,14 +740,12 @@ export default {
       this.selectedDate = date
       this.setPageDate(date)
     },
-
     setPageDate (date) {
       if (!date) {
         date = new Date()
       }
       this.pageDate = (new Date(date)).setDate(1)
     },
-
     /**
      * Close the calendar if clicked outside the datepicker
      * @param  {Event} event
@@ -789,7 +760,6 @@ export default {
         document.removeEventListener('click', this.clickOutside, false)
       }
     },
-
     dayClasses (day) {
       return {
         'selected': day.isSelected,
@@ -801,7 +771,6 @@ export default {
         'sun': day.isSunday
       }
     },
-
     init () {
       if (this.value) {
         this.setValue(this.value)
@@ -818,9 +787,7 @@ export default {
 </script>
 
 <style lang="stylus">
-
 $width = 300px
-
 .rtl
     direction:rtl
 .vdp-datepicker
@@ -828,7 +795,6 @@ $width = 300px
     text-align left
     *
         box-sizing border-box
-
 .vdp-datepicker__calendar
     position absolute
     z-index 100
@@ -843,7 +809,6 @@ $width = 300px
             text-align center
             width (100 - (100/7)*2)%
             float left
-
         .prev
         .next
             width (100/7)%
@@ -857,7 +822,6 @@ $width = 300px
                 top 50%
                 transform translateX(-50%) translateY(-50%)
                 border 6px solid transparent
-
         .prev
             &:after
                 border-right 10px solid #000
@@ -870,14 +834,12 @@ $width = 300px
                 margin-left 5px
             &.disabled:after
                 border-left 10px solid #ddd
-
         .prev:not(.disabled)
         .next:not(.disabled)
         .up:not(.disabled)
             cursor pointer
             &:hover
                 background #eee
-
     .disabled
         color #ddd
         cursor default
@@ -885,7 +847,6 @@ $width = 300px
         display flex
         width inherit
         flex-wrap wrap
-
     .cell
         display inline-block
         padding 0 5px
@@ -911,22 +872,17 @@ $width = 300px
             background #cae5ed
         &.grey
             color #888
-
             &:hover
                 background inherit
-
-
         &.day-header
             font-size 75%
             white-space no-wrap
             cursor inherit
             &:hover
                 background inherit
-
     .month,
     .year
         width 33.333%
-
 .vdp-datepicker__clear-button
 .vdp-datepicker__calendar-button
     cursor pointer
