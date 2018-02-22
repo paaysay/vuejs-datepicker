@@ -23,7 +23,7 @@
         :clear-button="clearButton"
         :disabled="disabledPicker"
         :required="required"
-        v-mask="'####-##-##'">
+        v-mask="customMask">
       <!-- Clear Button -->
       <span class="vdp-datepicker__clear-button" :class="{'input-group-addon' : bootstrapStyling}" v-if="clearButton && selectedDate" @click="clearDate()">
         <i :class="clearButtonIcon">
@@ -115,6 +115,9 @@ export default {
       validator: function (val) {
         return val === null || val instanceof Date || typeof val === 'string'
       }
+    },
+    customMask: {
+      default: '####-##-##'
     },
     name: String,
     id: String,
