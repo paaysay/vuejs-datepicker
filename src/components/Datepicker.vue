@@ -25,7 +25,7 @@
         :required="required"
         v-mask="customMask">
       <!-- Clear Button -->
-      <span class="vdp-datepicker__clear-button" :class="{'input-group-addon' : bootstrapStyling}" v-if="clearButton && selectedDate" @click="clearDate()">
+      <span class="vdp-datepicker__clear-button" :class="{'input-group-addon' : bootstrapStyling}" v-if="clearButton && selectedDate">
         <i :class="clearButtonIcon">
           <span v-if="calendarButtonIcon.length === 0">&times;</span>
         </i>
@@ -220,7 +220,6 @@ export default {
       if (!this.selectedDate) {
         return null
       }
-      console.log(this.selectedDate)
       return typeof this.format === 'function'
         ? this.format(this.selectedDate)
         : DateUtils.formatDate(new Date(this.selectedDate), this.format, this.translation)
@@ -353,8 +352,9 @@ export default {
       let valueDate = this.$refs.inputdatepicker.value
       let upperCaseFormat = this.format.toUpperCase()
       if (moment(valueDate, upperCaseFormat, true).isValid()) {
-        let momentDate = moment(valueDate).format(upperCaseFormat)
-        this.selectedDate = DateUtils.newDate(valueDate, this.format, this.translation)
+        let momentDate = moment(valueDate, upperCaseFormat).format(upperCaseFormat)
+        this.selectedDate = DateUtils.newDate(valueDate, upperCaseFormat, this.translation)
+
         try {
           let currentYear = this.disabled.from.getFullYear().toString().split('')
           let regex = new RegExp('^(0[1-9]|[1-2]\\d|3[0-1])\\/(0[1-9]|1[0-2])\\/(19[7-9]\\d|200\\d|20[0-' + currentYear[2] + '][0-' + currentYear[3] + '])$')
@@ -419,10 +419,10 @@ export default {
     },
     setDate (timestamp) {
       const date = new Date(timestamp)
+      let upperCaseFormat = this.format.toUpperCase()
       this.selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
       this.setPageDate(date)
       let momentDate = moment([date.getFullYear(), date.getMonth(), date.getDate()])
-      let upperCaseFormat = this.format.toUpperCase()
       this.$emit('selected', momentDate.format(upperCaseFormat))
       this.$emit('input', momentDate.format(upperCaseFormat))
     },
@@ -735,11 +735,11 @@ export default {
       }
       if (!date) {
         this.setPageDate()
-        this.selectedDate = null
+        // this.selectedDate = null
         return
       }
-      this.selectedDate = date
-      this.setPageDate(date)
+      // this.selectedDate = date
+      // this.setPageDate(date)
     },
     setPageDate (date) {
       if (!date) {
@@ -756,7 +756,7 @@ export default {
         if (this.isInline) {
           return this.showDayCalendar()
         }
-        this.resetDefaultDate()
+        // this.resetDefaultDate()
         this.close()
         document.removeEventListener('click', this.clickOutside, false)
       }

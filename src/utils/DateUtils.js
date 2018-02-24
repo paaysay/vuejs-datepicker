@@ -1,5 +1,5 @@
 import DateLanguages from './DateLanguages'
-
+import moment from 'moment'
 export default {
 
   /**
@@ -131,11 +131,11 @@ export default {
    */
   newDate (date, format, translation) {
     translation = (!translation) ? DateLanguages.translations.en : translation
-    // let year = date.substring(6, 10)
-    // let month = date.substring(3, 5)
-    // let day = date.substring(0, 2)
-    // return new Date(year, month - 1, day)
-    return new Date(date)
+    let mDate = moment(date, format)
+    let year = mDate.format('YYYY')
+    let month = mDate.month()
+    let day = mDate.format('DD')
+    return new Date(year, month, day)
   },
 
   /**
