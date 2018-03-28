@@ -16,7 +16,7 @@
         :id="id"
         ref="inputdatepicker"
         @keyup="updateDate"
-        @focus="showCalendar"
+        @focus="triggerCalender"
         @blur="onBlur"
         :value="formattedValue"
         :placeholder="placeholder"
@@ -178,6 +178,10 @@ export default {
     dayViewOnly: {
       type: Boolean,
       default: false
+    },
+    showCalenderOnFocus: {
+      type: Boolean,
+      default: true
     }
   },
   directives: {mask},
@@ -372,6 +376,11 @@ export default {
      * Effectively a toggle to show/hide the calendar
      * @return {mixed} [description]
      */
+    triggerCalender () {
+      if (this.showCalenderOnFocus === true) {
+        this.showCalendar()
+      }
+    },
     showCalendar () {
       if (this.disabledPicker || this.isInline) {
         return false
