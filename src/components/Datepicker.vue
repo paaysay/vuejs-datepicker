@@ -10,7 +10,7 @@
       <label v-if="name" v-bind:for="name" v-text="name" class="ui label"></label>
       <!-- Input -->
       <input
-        :type="inline ? 'hidden' : 'text'"
+        :type="inline ? 'hidden' : inputType"
         :class="[ inputClass, { 'form-control' : bootstrapStyling } ]"
         :name="name"
         :id="id"
@@ -182,6 +182,10 @@ export default {
     showCalenderOnFocus: {
       type: Boolean,
       default: true
+    },
+    inputType: {
+      type: String,
+      default: 'text'
     }
   },
   directives: {mask},
